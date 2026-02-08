@@ -24,7 +24,8 @@
 
 # Go workspace file
 go.work
-
+/config
+storage
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
