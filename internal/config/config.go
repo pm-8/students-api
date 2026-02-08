@@ -2,8 +2,10 @@ package config
 
 import (
 	"flag"
-	"os"
 	"log"
+	"os"
+
+	"github.com/ilyakaznacheev/cleanenv"
 )
 
 type Http_Server struct {
@@ -17,7 +19,7 @@ type Config struct {
 	Http_Server `yaml:"http_server"`
 }
 
-func MustLoad() { //things that should load to make this api work
+func MustLoad() *Config{ //things that should load to make this api work
 	var configPath string
 	configPath = os.Getenv("CONFIG_PATH")
 	if configPath == "" {
@@ -28,4 +30,14 @@ func MustLoad() { //things that should load to make this api work
 			log.Fatal("Config Path is not set")
 		}
 	}
+	if _,err := os.Stat(configPath); os.IsNotExist(err){
+		log.Fatalf("Config file does not exist at path: %s",configPath)
+	}
+	
+	var cfg Config
+	err := cleanenv.ReadConfig(configPath,&cfg)
+	if err != nil{
+		log.Fatalf("cannot read config file %s", configPath)
+	}
+	return &cfg
 }
