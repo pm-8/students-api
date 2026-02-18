@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github/pm-8/students-api/handler/student"
 	"github/pm-8/students-api/internal/config"
 	"log"
 	"log/slog"
@@ -18,9 +19,7 @@ func main(){
 	//database setup
 	//router setup
 	router := http.NewServeMux()
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request){
-		w.Write([]byte("Welcome to Student's API"))
-	})
+	router.HandleFunc("POST /api/students", student.New())
 	//server setup
 	server := http.Server{
 		Addr: cfg.Addr,
